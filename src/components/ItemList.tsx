@@ -1,23 +1,24 @@
+import { useDispatch, useSelector } from "react-redux";
+import { actions, getMessages } from "../features/messageSlice/messageSlice";
 import { Card } from "./Card";
 
 function ItemList() {
-  const items = [
-    { itemId: 1, amount: 10, pending: false, error: "" },
-    { itemId: 2, amount: 10, pending: false, error: "" },
-    { itemId: 3, amount: 10, pending: false, error: "" },
-  ];
+  const items = useSelector(getMessages);
   const itemsList = Object.entries(items);
+  const dispatcher = useDispatch();
+  const { increaseAmount, addItem } = actions;
+
   return (
     <div className="App p-10 bg-yellow-100 flex flex-1">
       <div className="grid grid-cols-3 gap-4">
-        {itemsList.map(([itemId, { amount, pending, error }]) => (
+        {itemsList.map(([itemId, { amount, pending, error }]: any) => (
           <Card
             key={itemId}
             error={error}
             likes={amount}
             pending={pending}
-            retry={() => console.log("Retry")}
-            addLike={() => console.log("Add like")}
+            retry={() => dispatcher(addItem({ itemId, amount }))}
+            addLike={() => dispatcher(increaseAmount({ itemId }))}
           />
         ))}
       </div>

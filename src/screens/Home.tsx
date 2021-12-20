@@ -1,13 +1,17 @@
+import { useDispatch } from "react-redux";
 import ItemList from "../components/ItemList";
 import { NetworkStatus } from "../components/NetworkStatus";
 import { StoreState } from "../components/StoreState";
+import { actions } from "../features/messageSlice/messageSlice";
 
 export default function Home({ network = false, store = false }) {
+  const appDispatch = useDispatch();
+  const { addItem } = actions;
 
   const handleAddItem = () => {
-    console.log("Add Item");
+    appDispatch(addItem({ itemId: Date.now(), amount: 10 }));
   };
-
+  
   return (
     <div className="flex h-screen">
       <div className="flex-1 flex flex-col overflow-hidden">
